@@ -824,7 +824,7 @@ definition {
 		Click(locator1 = "Modal#SAVE_BUTTON");
 
 		Click(locator1 = "Modal#PROPAGATE_BUTTON");
-	
+
 		Alert.viewSuccessMessage();
 
 		Click(locator1 = "Sidebar#BACK");
@@ -911,7 +911,7 @@ definition {
 		DataEngine.gotoFieldsetItemEllipsis(fieldsetName = "${fieldsetName}");
 
 		MenuItem.click(menuItem = "Edit");
-		
+
 		for (var locale : list "${localesList}") {
 			Click.clickNoMouseOver(locator1 = "Button#LOCALIZATION_GENERIC_MODAL");
 
@@ -927,7 +927,7 @@ definition {
 				Click(
 					key_fieldFieldLabel = "${fieldLabel} ${locale}",
 					locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL_IN_FIELDSET_MODAL");
-				
+
 				AssertTextEquals(
 					key_fieldLabel = "Label",
 					locator1 = "TextInput#GENERIC_TEXT_INPUT",

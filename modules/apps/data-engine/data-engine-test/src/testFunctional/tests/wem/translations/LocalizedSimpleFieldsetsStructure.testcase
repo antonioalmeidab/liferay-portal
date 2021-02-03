@@ -106,13 +106,13 @@ definition {
 			fieldsetName = "Fieldset Name");
 
 		DataEngine.translateFieldsetNLanguages(
-			fieldsetName = "Fieldset Name",
 			fieldLabelsList = "Text,Numeric",
+			fieldsetName = "Fieldset Name",
 			localesList = "pt-BR,de-DE,es-ES");
 
 		DataEngine.viewFieldsetNTranslations(
-			fieldsetName = "Fieldset Name",
 			fieldLabelsList = "Text,Numeric",
+			fieldsetName = "Fieldset Name",
 			localesList = "pt-BR,de-DE,es-ES");
 	}
 
