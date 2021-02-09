@@ -13,6 +13,8 @@ definition {
 		JSONGroup.addGroup(groupName = "Test Site Name");
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		NavItem.gotoStructures();
 	}
 
 	tearDown {
@@ -32,8 +34,6 @@ definition {
 		var defaultStructureName = "WC Structure Name EN";
 		var defaultStructureName_pt = "WC Structure Name PT";
 		var key_urlAppend = "pt/group/test-site-name/~/control_panel/manage?p_p_id=com_liferay_journal_web_portlet_JournalPortlet&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&_com_liferay_journal_web_portlet_JournalPortlet_mvcPath=%2Fview_ddm_structures.jsp";
-
-		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -63,8 +63,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test CheckLanguageSelector {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
@@ -78,8 +76,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test CheckLocalizationOfFieldsUponLanguageChange {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
@@ -123,8 +119,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test DefaultTitleIsDisplayedUponLocaleChange {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
@@ -139,8 +133,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test DefaultTitlePersistsAfterTranslatingForAnotherLocale {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
 		DataEngine.addField(
@@ -178,8 +170,6 @@ definition {
 	@priority = "4"
 	test DefaultTitlePersistsUponFirstlyTranslatingForAnotherLocale {
 		property portal.acceptance = "false";
-
-		NavItem.gotoStructures();
 
 		LexiconEntry.gotoAdd();
 
@@ -219,8 +209,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test DuplicateTranslatedField {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(structureName = "WC Structure Name");
 
 		DataEngine.addField(
@@ -267,8 +255,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test TranslateStructureWithoutDefaultTitle {
-		NavItem.gotoStructures();
-
 		LexiconEntry.gotoAdd();
 
 		AssertVisible(locator1 = "Sidebar#FORM_BUILDER");
@@ -297,8 +283,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "5"
 	test TranslationDoesNotChangeAnother {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
@@ -378,8 +362,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "5"
 	test TranslationPersistsAfterEditingAnother {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
@@ -453,8 +435,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "5"
 	test TranslationsRemainUponSavingStructure {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
@@ -502,8 +482,6 @@ definition {
 	@description = "This is a test for LPS-122278. As Content Creator, I want to define reusable translations when creating WEM Structures without nested fields or fieldsets"
 	@priority = "4"
 	test VerifyDefaultLanguageIsFirstShown {
-		NavItem.gotoStructures();
-
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
 			structureName = "WC Structure Name");
