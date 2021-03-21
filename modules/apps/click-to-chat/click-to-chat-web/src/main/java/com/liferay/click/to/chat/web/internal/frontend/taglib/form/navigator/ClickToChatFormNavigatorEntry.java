@@ -46,8 +46,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Brian Wing Shun Chan
  */
 @Component(
-	configurationPid = "com.liferay.click.to.chat.web.internal.configuration.ClickToChatConfiguration",
-	immediate = true, property = "form.navigator.entry.order:Integer=30",
+	configurationPid = ClickToChatConfiguration.ID, immediate = true,
+	property = "form.navigator.entry.order:Integer=30",
 	service = FormNavigatorEntry.class
 )
 public class ClickToChatFormNavigatorEntry
@@ -103,14 +103,15 @@ public class ClickToChatFormNavigatorEntry
 			systemSettingsEnabled);
 
 		boolean clickToChatEnabled = GetterUtil.getBoolean(
-			typeSettingsUnicodeProperties.getProperty("clickToChatEnabled"));
+			typeSettingsUnicodeProperties.getProperty(
+				ClickToChatWebKeys.CLICK_TO_CHAT_GROUP_ENABLED));
 
 		httpServletRequest.setAttribute(
-			ClickToChatWebKeys.CLICK_TO_CHAT_ENABLED, clickToChatEnabled);
+			ClickToChatWebKeys.CLICK_TO_CHAT_GROUP_ENABLED, clickToChatEnabled);
 
 		boolean clickToChatSignedInUsersOnly = GetterUtil.getBoolean(
 			typeSettingsUnicodeProperties.getProperty(
-				"clickToChatSignedInUsersOnly"));
+				ClickToChatWebKeys.CLICK_TO_CHAT_SIGNED_IN_USERS_ONLY));
 
 		httpServletRequest.setAttribute(
 			ClickToChatWebKeys.CLICK_TO_CHAT_SIGNED_IN_USERS_ONLY,
@@ -118,7 +119,7 @@ public class ClickToChatFormNavigatorEntry
 
 		String clickToChatProviderAccountToken = GetterUtil.getString(
 			typeSettingsUnicodeProperties.getProperty(
-				"clickToChatProviderAccountToken"));
+				ClickToChatWebKeys.CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
 
 		httpServletRequest.setAttribute(
 			ClickToChatWebKeys.CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN,
