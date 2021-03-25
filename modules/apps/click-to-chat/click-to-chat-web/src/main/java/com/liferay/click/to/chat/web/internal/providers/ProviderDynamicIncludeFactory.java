@@ -31,6 +31,9 @@ public class ProviderDynamicIncludeFactory {
 			else if (provider.equals(ProviderOptions.JIVOCHAT)) {
 				return new JivochatDynamicInclude(providerAccountToken, user);
 			}
+			else if (provider.equals(ProviderOptions.LIVEPERSON)) {
+				return new LivePersonDynamicInclude(providerAccountToken, user);
+			}
 			else if (provider.equals(ProviderOptions.CRISP)) {
 				return new CrispDynamicInclude(providerAccountToken, user);
 			}
