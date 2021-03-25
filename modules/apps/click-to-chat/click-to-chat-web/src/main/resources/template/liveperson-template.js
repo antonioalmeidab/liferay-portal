@@ -1,9 +1,9 @@
-// var siteCode = '...';
-
+<!-- Start of LivePerson Chat Code -->
+<script type='text/javascript'>
 window.lpTag = window.lpTag || {}, 'undefined' == typeof window.lpTag._tagCount ? (window.lpTag = {
 	wl: lpTag.wl || null,
 	scp: lpTag.scp || null,
-	site: siteCode || '',
+	site: '%s' || '',
 	section: lpTag.section || '',
 	tagletSection: lpTag.tagletSection || null,
 	autoStart: lpTag.autoStart !== !1,
@@ -62,3 +62,23 @@ window.lpTag = window.lpTag || {}, 'undefined' == typeof window.lpTag._tagCount 
 	identities: lpTag.identities || [],
 	ev: lpTag.ev || []
 }, lpTag.init()) : window.lpTag._tagCount += 1;
+
+lpTag.sdes = lpTag.sdes || [];
+lpTag.sdes.push({
+			"type": "personal",
+            "personal": {
+				"firstname": '%s',
+                "lastname": '%s',
+				"contacts": [{ "email": '%s' }]
+            }
+        });
+
+lpTag.sdes.push({
+			"type": "ctmrinfo",
+            "info": {
+				"userName": '%s',
+                "customerId": '%s'
+            }
+        });
+</script>
+<!-- End of LivePerson Chat Code -->
