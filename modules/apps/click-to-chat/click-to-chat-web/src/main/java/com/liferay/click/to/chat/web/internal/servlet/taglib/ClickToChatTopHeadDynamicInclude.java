@@ -93,13 +93,14 @@ public class ClickToChatTopHeadDynamicInclude implements DynamicInclude {
 			"/html/common/themes/top_head.jsp#post");
 	}
 
-	private String _determineProviderTokenForSite() {
+	private void _setProviderAndTokenForSite() {
 		GroupProviderTokenStrategy strategy =
 			_clickToChatConfiguration.groupProviderTokenStrategy();
 
 		if (strategy != null) {
 			if (strategy.equals(GroupProviderTokenStrategy.ALWAYS_INHERIT)) {
-				return _clickToChatConfiguration.defaultAccountToken();
+				_providerAccountToken = _clickToChatConfiguration.defaultAccountToken();
+				_provider = _clickToChatConfiguration.provider();
 			}
 			else if (strategy.equals(
 						GroupProviderTokenStrategy.PROVIDE_OR_INHERIT)) {
@@ -109,17 +110,28 @@ public class ClickToChatTopHeadDynamicInclude implements DynamicInclude {
 						ClickToChatWebKeys.
 							CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
 
-				if (Validator.isNotNull(groupProviderToken)) {
-					return groupProviderToken;
-				}
+				String groupProvider = GetterUtil.getString(
+					_typeSettingsUnicodeProperties.getProperty(
+						ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER));
 
-				return _clickToChatConfiguration.defaultAccountToken();
+				if (Validator.isNotNull(groupProviderToken)) {
+					_providerAccountToken =  groupProviderToken;
+					_provider = ProviderOptions.parse(groupProvider);
+				} else {
+					_providerAccountToken =  _clickToChatConfiguration.defaultAccountToken();;
+					_provider = _clickToChatConfiguration.provider();
+				}
 			}
 			else if (strategy.equals(GroupProviderTokenStrategy.PROVIDE)) {
-				return GetterUtil.getString(
+
+				_providerAccountToken = GetterUtil.getString(
 					_typeSettingsUnicodeProperties.getProperty(
 						ClickToChatWebKeys.
 							CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
+				
+				_provider = ProviderOptions.parse(GetterUtil.getString(
+					_typeSettingsUnicodeProperties.getProperty(
+							ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER)));
 			}
 			else {
 				throw new UnsupportedOperationException(
@@ -150,18 +162,18 @@ public class ClickToChatTopHeadDynamicInclude implements DynamicInclude {
 			return sb.toString();
 		}
 		else {
-			String providerAccountToken = _determineProviderTokenForSite();
+			_setProviderAndTokenForSite();
 
-			if (Validator.isNull(providerAccountToken)) {
+			if (Validator.isNull(_providerAccountToken)) {
 				return "<!-- Provider Account Token not setted in Click to " +
 					"Chat -->";
 			}
 
-			ProviderOptions provider = _clickToChatConfiguration.provider();
+			ProviderOptions provider = _provider;
 
 			ProviderDynamicInclude providerDynamicInclude =
 				ProviderDynamicIncludeFactory.create(
-					provider, providerAccountToken, themeDisplay.getUser());
+					provider, _providerAccountToken, themeDisplay.getUser());
 
 			if (providerDynamicInclude != null) {
 				return providerDynamicInclude.getContentToInclude();
@@ -197,5 +209,7 @@ public class ClickToChatTopHeadDynamicInclude implements DynamicInclude {
 
 	private volatile ClickToChatConfiguration _clickToChatConfiguration;
 	private UnicodeProperties _typeSettingsUnicodeProperties;
+	private ProviderOptions _provider;
+	private String _providerAccountToken = null;
 
 }
