@@ -17,6 +17,7 @@ package com.liferay.click.to.chat.web.internal.frontend.taglib.form.navigator;
 import com.liferay.click.to.chat.web.internal.configuration.ClickToChatConfiguration;
 import com.liferay.click.to.chat.web.internal.configuration.GroupProviderTokenStrategy;
 import com.liferay.click.to.chat.web.internal.constants.ClickToChatWebKeys;
+import com.liferay.click.to.chat.web.internal.providers.ProviderOptions;
 import com.liferay.frontend.taglib.form.navigator.BaseJSPFormNavigatorEntry;
 import com.liferay.frontend.taglib.form.navigator.FormNavigatorEntry;
 import com.liferay.frontend.taglib.form.navigator.constants.FormNavigatorConstants;
@@ -124,6 +125,14 @@ public class ClickToChatFormNavigatorEntry
 		httpServletRequest.setAttribute(
 			ClickToChatWebKeys.CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN,
 			clickToChatProviderAccountToken);
+
+		String clickToChatProvider = GetterUtil.getString(
+			typeSettingsUnicodeProperties.getProperty(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER));
+		
+		httpServletRequest.setAttribute(
+			ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER,
+			clickToChatProvider);
 
 		GroupProviderTokenStrategy strategy =
 			_clickToChatConfiguration.groupProviderTokenStrategy();
