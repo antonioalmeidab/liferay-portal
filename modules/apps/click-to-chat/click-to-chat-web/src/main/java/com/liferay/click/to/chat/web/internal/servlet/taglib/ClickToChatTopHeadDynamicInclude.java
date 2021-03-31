@@ -93,57 +93,6 @@ public class ClickToChatTopHeadDynamicInclude implements DynamicInclude {
 			"/html/common/themes/top_head.jsp#post");
 	}
 
-	private void _setProviderAndTokenForSite() {
-		GroupProviderTokenStrategy strategy =
-			_clickToChatConfiguration.groupProviderTokenStrategy();
-
-		if (strategy != null) {
-			if (strategy.equals(GroupProviderTokenStrategy.ALWAYS_INHERIT)) {
-				_providerAccountToken = _clickToChatConfiguration.defaultAccountToken();
-				_provider = _clickToChatConfiguration.provider();
-			}
-			else if (strategy.equals(
-						GroupProviderTokenStrategy.PROVIDE_OR_INHERIT)) {
-
-				String groupProviderToken = GetterUtil.getString(
-					_typeSettingsUnicodeProperties.getProperty(
-						ClickToChatWebKeys.
-							CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
-
-				String groupProvider = GetterUtil.getString(
-					_typeSettingsUnicodeProperties.getProperty(
-						ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER));
-
-				if (Validator.isNotNull(groupProviderToken)) {
-					_providerAccountToken =  groupProviderToken;
-					_provider = ProviderOptions.parse(groupProvider);
-				} else {
-					_providerAccountToken =  _clickToChatConfiguration.defaultAccountToken();;
-					_provider = _clickToChatConfiguration.provider();
-				}
-			}
-			else if (strategy.equals(GroupProviderTokenStrategy.PROVIDE)) {
-
-				_providerAccountToken = GetterUtil.getString(
-					_typeSettingsUnicodeProperties.getProperty(
-						ClickToChatWebKeys.
-							CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
-				
-				_provider = ProviderOptions.parse(GetterUtil.getString(
-					_typeSettingsUnicodeProperties.getProperty(
-							ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER)));
-			}
-			else {
-				throw new UnsupportedOperationException(
-					"Unsupported strategy: " + strategy);
-			}
-		}
-		else {
-			throw new UnsupportedOperationException(
-				"Unsupported strategy: " + strategy);
-		}
-	}
-
 	private String _getContentToInclude(ThemeDisplay themeDisplay)
 		throws IOException {
 
@@ -207,9 +156,63 @@ public class ClickToChatTopHeadDynamicInclude implements DynamicInclude {
 		return false;
 	}
 
+	private void _setProviderAndTokenForSite() {
+		GroupProviderTokenStrategy strategy =
+			_clickToChatConfiguration.groupProviderTokenStrategy();
+
+		if (strategy != null) {
+			if (strategy.equals(GroupProviderTokenStrategy.ALWAYS_INHERIT)) {
+				_providerAccountToken =
+					_clickToChatConfiguration.defaultAccountToken();
+				_provider = _clickToChatConfiguration.provider();
+			}
+			else if (strategy.equals(
+						GroupProviderTokenStrategy.PROVIDE_OR_INHERIT)) {
+
+				String groupProviderToken = GetterUtil.getString(
+					_typeSettingsUnicodeProperties.getProperty(
+						ClickToChatWebKeys.
+							CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
+
+				if (Validator.isNotNull(groupProviderToken)) {
+					String groupProvider = GetterUtil.getString(
+						_typeSettingsUnicodeProperties.getProperty(
+							ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER));
+
+					_providerAccountToken = groupProviderToken;
+					_provider = ProviderOptions.parse(groupProvider);
+				}
+				else {
+					_providerAccountToken =
+						_clickToChatConfiguration.defaultAccountToken();
+					_provider = _clickToChatConfiguration.provider();
+				}
+			}
+			else if (strategy.equals(GroupProviderTokenStrategy.PROVIDE)) {
+				_providerAccountToken = GetterUtil.getString(
+					_typeSettingsUnicodeProperties.getProperty(
+						ClickToChatWebKeys.
+							CLICK_TO_CHAT_GROUP_PROVIDER_ACCOUNT_TOKEN));
+
+				_provider = ProviderOptions.parse(
+					GetterUtil.getString(
+						_typeSettingsUnicodeProperties.getProperty(
+							ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER)));
+			}
+			else {
+				throw new UnsupportedOperationException(
+					"Unsupported strategy: " + strategy);
+			}
+		}
+		else {
+			throw new UnsupportedOperationException(
+				"Unsupported strategy: " + strategy);
+		}
+	}
+
 	private volatile ClickToChatConfiguration _clickToChatConfiguration;
-	private UnicodeProperties _typeSettingsUnicodeProperties;
 	private ProviderOptions _provider;
-	private String _providerAccountToken = null;
+	private String _providerAccountToken;
+	private UnicodeProperties _typeSettingsUnicodeProperties;
 
 }
