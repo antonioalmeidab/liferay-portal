@@ -29,15 +29,6 @@ import com.liferay.dynamic.data.mapping.annotations.DDMFormRule;
 	rules = {
 		@DDMFormRule(
 			actions = {
-				"setEnabled('chatProviderId', false)",
-				"setEnabled('chatProviderAccountId', false)",
-				"setEnabled('guestUsersAllowed', false)",
-				"setEnabled('siteSettingsStrategy', false)"
-			},
-			condition = "equals(getValue('enabled'), false)"
-		),
-		@DDMFormRule(
-			actions = {
 				"setVisible('chatProviderId', false)",
 				"setVisible('chatProviderAccountId', false)",
 				"setVisible('guestUsersAllowed', false)"
@@ -133,7 +124,8 @@ public interface ClickToChatConfigurationForm {
 		optionValues = {
 			"always-inherit", "always-override", "inherit-or-override"
 		},
-		tip = "%site-settings-strategy-description", type = "select"
+		required = true, tip = "%site-settings-strategy-description",
+		type = "select"
 	)
 	public String siteSettingsStrategy();
 
