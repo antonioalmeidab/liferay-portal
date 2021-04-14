@@ -21,7 +21,7 @@ ClickToChatConfiguration clickToChatConfiguration = (ClickToChatConfiguration)re
 
 boolean disabled = false;
 
-if (Objects.equals(clickToChatConfiguration.siteSettingsStrategy(), "always-inherit")) {
+if (Objects.equals(clickToChatConfiguration.siteSettingsStrategy(), "always-inherit") || Validator.isNull(clickToChatConfiguration.siteSettingsStrategy())) {
 	disabled = true;
 }
 
@@ -37,9 +37,11 @@ boolean clickToChatEnabled = GetterUtil.getBoolean(request.getAttribute(ClickToC
 		</label>
 	</div>
 
-	<div class="col-md-12">
-		<liferay-ui:message key='<%= "site-settings-strategy-" + clickToChatConfiguration.siteSettingsStrategy() %>' />
-	</div>
+	<c:if test="<%= Validator.isNotNull(clickToChatConfiguration.siteSettingsStrategy()) %>">
+		<div class="col-md-12">
+			<liferay-ui:message key='<%= "site-settings-strategy-" + clickToChatConfiguration.siteSettingsStrategy() %>' />
+		</div>
+	</c:if>
 </div>
 
 <div class="row">
@@ -131,15 +133,15 @@ String clickToChatProviderId = GetterUtil.getString(request.getAttribute(ClickTo
 
 	function onChangeEnableClickToChat() {
 		Liferay.Util.toggleDisabled(
-			clickToChatProviderId,
-			!clickToChatEnabled.checked
-		);
-		Liferay.Util.toggleDisabled(
 			chatProviderAccountId,
 			!clickToChatEnabled.checked
 		);
 		Liferay.Util.toggleDisabled(
 			clickToChatGuestUsersAllowed,
+			!clickToChatEnabled.checked
+		);
+		Liferay.Util.toggleDisabled(
+			clickToChatProviderId,
 			!clickToChatEnabled.checked
 		);
 	}
