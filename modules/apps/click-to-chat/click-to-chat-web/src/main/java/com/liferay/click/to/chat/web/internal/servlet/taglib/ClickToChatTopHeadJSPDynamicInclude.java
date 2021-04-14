@@ -22,7 +22,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
-import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.servlet.taglib.BaseJSPDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -67,153 +66,140 @@ public class ClickToChatTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 			return;
 		}
 
-		try {
-			ClickToChatConfiguration clickToChatConfiguration =
-				_configurationProvider.getCompanyConfiguration(
-					ClickToChatConfiguration.class,
-					CompanyThreadLocal.getCompanyId());
+		ClickToChatConfiguration clickToChatConfiguration =
+			_getClickToChatConfiguration(themeDisplay.getCompanyId());
 
-			if (Objects.equals(
+		if (Objects.equals(
+				clickToChatConfiguration.siteSettingsStrategy(),
+				"always-inherit")) {
+
+			if (!clickToChatConfiguration.enabled()) {
+				return;
+			}
+
+			if (!clickToChatConfiguration.guestUsersAllowed() &&
+				!themeDisplay.isSignedIn()) {
+
+				return;
+			}
+
+			if (Validator.isNull(
+					clickToChatConfiguration.chatProviderAccountId()) ||
+				Validator.isNull(clickToChatConfiguration.chatProviderId())) {
+
+				return;
+			}
+
+			httpServletRequest.setAttribute(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ACCOUNT_ID,
+				clickToChatConfiguration.chatProviderAccountId());
+			httpServletRequest.setAttribute(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ID,
+				clickToChatConfiguration.chatProviderId());
+		}
+		else if (Objects.equals(
 					clickToChatConfiguration.siteSettingsStrategy(),
-					"always-inherit")) {
+					"always-override")) {
 
+			UnicodeProperties typeSettingsUnicodeProperties =
+				group.getTypeSettingsProperties();
+
+			if (!GetterUtil.getBoolean(
+					typeSettingsUnicodeProperties.getProperty(
+						"clickToChatEnabled"))) {
+
+				return;
+			}
+
+			if (!GetterUtil.getBoolean(
+					typeSettingsUnicodeProperties.getProperty(
+						"clickToChatGuestUsersAllowed")) &&
+				!themeDisplay.isSignedIn()) {
+
+				return;
+			}
+
+			String clickToChatProviderAccountId =
+				typeSettingsUnicodeProperties.getProperty(
+					"clickToChatProviderAccountId");
+			String clickToChatProviderId =
+				typeSettingsUnicodeProperties.getProperty(
+					"clickToChatProviderId");
+
+			if (Validator.isNull(clickToChatProviderAccountId) ||
+				Validator.isNull(clickToChatProviderId)) {
+
+				return;
+			}
+
+			httpServletRequest.setAttribute(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ACCOUNT_ID,
+				clickToChatProviderAccountId);
+			httpServletRequest.setAttribute(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ID,
+				clickToChatProviderId);
+		}
+		else if (Objects.equals(
+					clickToChatConfiguration.siteSettingsStrategy(),
+					"inherit-or-override")) {
+
+			UnicodeProperties typeSettingsUnicodeProperties =
+				group.getTypeSettingsProperties();
+
+			String clickToChatEnabled =
+				typeSettingsUnicodeProperties.getProperty("clickToChatEnabled");
+
+			if (clickToChatEnabled == null) {
 				if (!clickToChatConfiguration.enabled()) {
 					return;
 				}
+			}
+			else {
+				if (!GetterUtil.getBoolean(clickToChatEnabled)) {
+					return;
+				}
+			}
 
+			String clickToChatGuestUsersAllowed =
+				typeSettingsUnicodeProperties.getProperty(
+					"clickToChatGuestUsersAllowed");
+
+			if (clickToChatGuestUsersAllowed == null) {
 				if (!clickToChatConfiguration.guestUsersAllowed() &&
 					!themeDisplay.isSignedIn()) {
 
 					return;
 				}
-
-				if (Validator.isNull(
-						clickToChatConfiguration.chatProviderAccountId()) ||
-					Validator.isNull(
-						clickToChatConfiguration.chatProviderId())) {
-
-					return;
-				}
-
-				httpServletRequest.setAttribute(
-					ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ACCOUNT_ID,
-					clickToChatConfiguration.chatProviderAccountId());
-				httpServletRequest.setAttribute(
-					ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ID,
-					clickToChatConfiguration.chatProviderId());
 			}
-			else if (Objects.equals(
-						clickToChatConfiguration.siteSettingsStrategy(),
-						"always-override")) {
-
-				UnicodeProperties typeSettingsUnicodeProperties =
-					group.getTypeSettingsProperties();
-
-				if (!GetterUtil.getBoolean(
-						typeSettingsUnicodeProperties.getProperty(
-							"clickToChatEnabled"))) {
-
-					return;
-				}
-
-				if (!GetterUtil.getBoolean(
-						typeSettingsUnicodeProperties.getProperty(
-							"clickToChatGuestUsersAllowed")) &&
+			else {
+				if (!GetterUtil.getBoolean(clickToChatGuestUsersAllowed) &&
 					!themeDisplay.isSignedIn()) {
 
 					return;
 				}
-
-				String clickToChatProviderAccountId =
-					typeSettingsUnicodeProperties.getProperty(
-						"clickToChatProviderAccountId");
-				String clickToChatProviderId =
-					typeSettingsUnicodeProperties.getProperty(
-						"clickToChatProviderId");
-
-				if (Validator.isNull(clickToChatProviderAccountId) ||
-					Validator.isNull(clickToChatProviderId)) {
-
-					return;
-				}
-
-				httpServletRequest.setAttribute(
-					ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ACCOUNT_ID,
-					clickToChatProviderAccountId);
-				httpServletRequest.setAttribute(
-					ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ID,
-					clickToChatProviderId);
-			}
-			else if (Objects.equals(
-						clickToChatConfiguration.siteSettingsStrategy(),
-						"inherit-or-override")) {
-
-				UnicodeProperties typeSettingsUnicodeProperties =
-					group.getTypeSettingsProperties();
-
-				String clickToChatEnabled =
-					typeSettingsUnicodeProperties.getProperty(
-						"clickToChatEnabled");
-
-				if (clickToChatEnabled == null) {
-					if (!clickToChatConfiguration.enabled()) {
-						return;
-					}
-				}
-				else {
-					if (!GetterUtil.getBoolean(clickToChatEnabled)) {
-						return;
-					}
-				}
-
-				String clickToChatGuestUsersAllowed =
-					typeSettingsUnicodeProperties.getProperty(
-						"clickToChatGuestUsersAllowed");
-
-				if (clickToChatGuestUsersAllowed == null) {
-					if (!clickToChatConfiguration.guestUsersAllowed() &&
-						!themeDisplay.isSignedIn()) {
-
-						return;
-					}
-				}
-				else {
-					if (!GetterUtil.getBoolean(clickToChatGuestUsersAllowed) &&
-						!themeDisplay.isSignedIn()) {
-
-						return;
-					}
-				}
-
-				String clickToChatProviderAccountId =
-					typeSettingsUnicodeProperties.getProperty(
-						"clickToChatProviderAccountId",
-						clickToChatConfiguration.chatProviderAccountId());
-				String clickToChatProviderId =
-					typeSettingsUnicodeProperties.getProperty(
-						"clickToChatProviderId",
-						clickToChatConfiguration.chatProviderId());
-
-				if (Validator.isNull(clickToChatProviderAccountId) ||
-					Validator.isNull(clickToChatProviderId)) {
-
-					return;
-				}
-
-				httpServletRequest.setAttribute(
-					ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ACCOUNT_ID,
-					clickToChatProviderAccountId);
-				httpServletRequest.setAttribute(
-					ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ID,
-					clickToChatProviderId);
-			}
-		}
-		catch (PortalException portalException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(portalException, portalException);
 			}
 
-			throw new SystemException(portalException);
+			String clickToChatProviderAccountId =
+				typeSettingsUnicodeProperties.getProperty(
+					"clickToChatProviderAccountId",
+					clickToChatConfiguration.chatProviderAccountId());
+			String clickToChatProviderId =
+				typeSettingsUnicodeProperties.getProperty(
+					"clickToChatProviderId",
+					clickToChatConfiguration.chatProviderId());
+
+			if (Validator.isNull(clickToChatProviderAccountId) ||
+				Validator.isNull(clickToChatProviderId)) {
+
+				return;
+			}
+
+			httpServletRequest.setAttribute(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ACCOUNT_ID,
+				clickToChatProviderAccountId);
+			httpServletRequest.setAttribute(
+				ClickToChatWebKeys.CLICK_TO_CHAT_PROVIDER_ID,
+				clickToChatProviderId);
 		}
 
 		super.include(httpServletRequest, httpServletResponse, key);
@@ -235,13 +221,6 @@ public class ClickToChatTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 		return _log;
 	}
 
-	@Reference(unbind = "-")
-	protected void setConfigurationProvider(
-		ConfigurationProvider configurationProvider) {
-
-		_configurationProvider = configurationProvider;
-	}
-
 	@Override
 	@Reference(
 		target = "(osgi.web.symbolicname=com.liferay.click.to.chat.web)",
@@ -251,9 +230,22 @@ public class ClickToChatTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 		super.setServletContext(servletContext);
 	}
 
+	private ClickToChatConfiguration _getClickToChatConfiguration(
+		long companyId) {
+
+		try {
+			return _configurationProvider.getCompanyConfiguration(
+				ClickToChatConfiguration.class, companyId);
+		}
+		catch (PortalException portalException) {
+			throw new SystemException(portalException);
+		}
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClickToChatTopHeadJSPDynamicInclude.class);
 
+	@Reference
 	private ConfigurationProvider _configurationProvider;
 
 }
