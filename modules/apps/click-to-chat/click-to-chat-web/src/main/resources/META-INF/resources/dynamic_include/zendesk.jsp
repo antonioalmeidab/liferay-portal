@@ -22,8 +22,8 @@
 <c:if test="<%= themeDisplay.isSignedIn() %>">
 	<script>
 		zE('webWidget', 'identify', {
-			name: '<%= user.getScreenName() %>',
 			email: '<%= user.getEmailAddress() %>',
+			name: '<%= user.getScreenName() %>',
 		});
 	</script>
 </c:if>

@@ -52,7 +52,7 @@
 			},
 			once: function () {
 				i(['once', c.call(arguments)]);
-			}
+			},
 		};
 		!n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e);
 	})(window, document, [].slice);

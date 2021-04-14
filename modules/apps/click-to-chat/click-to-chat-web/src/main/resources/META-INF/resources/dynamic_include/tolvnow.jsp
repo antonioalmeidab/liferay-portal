@@ -31,9 +31,9 @@
 	(function () {
 		document.write(unescape("%3Cspan id='tolvnow'%3E%3C/span%3E"));
 		var tss = document.createElement('script');
-		tss.type = 'text/javascript';
 		tss.async = true;
 		tss.src = '//tracker.tolvnow.com/js/tn.js';
+		tss.type = 'text/javascript';
 		var s = document.getElementsByTagName('script')[0];
 		s.parentNode.insertBefore(tss, s);
 	})();

@@ -21,18 +21,18 @@
 	_smartsupp.key = '<%= clickToChatProviderAccountId %>';
 	window.smartsupp ||
 		(function (d) {
-			var s,
-				c,
+			var c,
+				s,
 				o = (smartsupp = function () {
 					o._.push(arguments);
 				});
 			o._ = [];
-			s = d.getElementsByTagName('script')[0];
 			c = d.createElement('script');
-			c.type = 'text/javascript';
-			c.charset = 'utf-8';
 			c.async = true;
+			c.charset = 'utf-8';
 			c.src = 'https://www.smartsuppchat.com/loader.js?';
+			c.type = 'text/javascript';
+			s = d.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(c, s);
 		})(document);
 
