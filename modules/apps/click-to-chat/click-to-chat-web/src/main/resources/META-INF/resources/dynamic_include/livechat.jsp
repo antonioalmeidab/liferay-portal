@@ -24,17 +24,11 @@
 			return e._h ? e._h.apply(null, n) : e._q.push(n);
 		}
 		var e = {
-			_q: [],
 			_h: null,
+			_q: [],
 			_v: '2.0',
-			on: function () {
-				i(['on', c.call(arguments)]);
-			},
-			once: function () {
-				i(['once', c.call(arguments)]);
-			},
-			off: function () {
-				i(['off', c.call(arguments)]);
+			call: function () {
+				i(['call', c.call(arguments)]);
 			},
 			get: function () {
 				if (!e._h)
@@ -43,9 +37,6 @@
 					);
 				return i(['get', c.call(arguments)]);
 			},
-			call: function () {
-				i(['call', c.call(arguments)]);
-			},
 			init: function () {
 				var n = t.createElement('script');
 				(n.async = !0),
@@ -53,6 +44,15 @@
 					(n.src = 'https://cdn.livechatinc.com/tracking.js'),
 					t.head.appendChild(n);
 			},
+			off: function () {
+				i(['off', c.call(arguments)]);
+			},
+			on: function () {
+				i(['on', c.call(arguments)]);
+			},
+			once: function () {
+				i(['once', c.call(arguments)]);
+			}
 		};
 		!n.__lc.asyncInit && e.init(), (n.LiveChatWidget = n.LiveChatWidget || e);
 	})(window, document, [].slice);
@@ -61,8 +61,8 @@
 <c:if test="<%= themeDisplay.isSignedIn() %>">
 	<script>
 		window.onload = function () {
-			LiveChatWidget.call('<%= user.getEmailAddress() %>');
-			LiveChatWidget.call('<%= user.getScreenName() %>');
+			LiveChatWidget.call('set_customer_email', '<%= user.getEmailAddress() %>');
+			LiveChatWidget.call('set_customer_name', '<%= user.getScreenName() %>');
 		};
 	</script>
 </c:if>
